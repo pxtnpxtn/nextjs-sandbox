@@ -1,16 +1,29 @@
 import Head from 'next/head'
-import styles from '../styles/Home.module.css'
+import ArticleList from '../components/ArticleList'
+import styles from '../styles/Layout.module.css'
 
-export default function Home() {
+export default function Home({ articles }) {
   return (
-    <div className={styles.container}>
+    <div>
       <Head>
         <title>NextJS Sandbox</title>
         <link rel="icon" href="/favicon.ico" />
         <meta name='keywords' content='learn next, web development' />
       </Head>
 
+      <ArticleList articles={articles} />
       
     </div>
   )
+}
+
+export const getStaticProps = async () => {
+  const res = await fetch(`https://jsonplaceholder.typicode.com/posts?_limit=6`)
+  const articles = await res.json();
+
+  return {
+    props: {
+      articles
+    }
+  }
 }
